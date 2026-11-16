@@ -36,7 +36,7 @@ export default function Home() {
       }
       if (settingsResult.status === "fulfilled") {
         const settings = settingsResult.value.data || {};
-        setSocialLinks([["Instagram", settings.instagramUrl || "https://www.instagram.com/atelye_apurv/?hl=en"], ["LinkedIn", settings.linkedInUrl || "https://www.linkedin.com/"]]);
+        setSocialLinks([["Instagram", settings.instagramUrl || "https://www.instagram.com/atelye_apurv/?hl=en"], ["LinkedIn", settings.linkedInUrl || "https://www.linkedin.com/in/apurv-baid-618597136"]]);
       }
     });
     return () => { mounted = false; };
