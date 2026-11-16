@@ -20,7 +20,7 @@ const navigation = [
 
 export default function Home() {
   const [slides, setSlides] = useState([]);
-  const [socialLinks, setSocialLinks] = useState([["Instagram", "https://www.instagram.com/atelye_apurv/?hl=en"], ["LinkedIn", "https://www.linkedin.com/in/apurv-baid-618597136/"]]);
+  const [socialLinks, setSocialLinks] = useState([["Instagram", "https://www.instagram.com/atelye_apurv/?hl=en"], ["LinkedIn", "https://www.linkedin.com/in/apurv-baid-618597136"]]);
   const [active, setActive] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
