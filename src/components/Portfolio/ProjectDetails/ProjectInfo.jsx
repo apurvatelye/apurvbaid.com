@@ -11,7 +11,6 @@ export default function ProjectInfo({ project }) {
           </div>
         </aside>
         <div className="lg:col-span-8">
-          /* {project?.description && <p className="mb-8 text-2xl leading-relaxed text-white md:text-4xl">{project.description}</p>}*/
           {project?.description && <p className="mb-8 text-2xl leading-relaxed text-white md:text-4xl">{project.heading}</p>}
           {project?.philosophy && <p className="max-w-3xl whitespace-pre-line text-base leading-[2] text-neutral-400 md:text-lg">{project.philosophy}</p>}
         </div>
