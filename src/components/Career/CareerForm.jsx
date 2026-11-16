@@ -1,3 +1,366 @@
+// import { ArrowRight, Upload } from "lucide-react";
+// import { useState } from "react";
+// import api from "../../services/api";
+
+// export default function CareerForm() {
+//   const [formData, setFormData] = useState({
+//     name: "",
+//     email: "",
+//     phone: "",
+//     position: "",
+//     message: "",
+//   });
+
+//   const [resume, setResume] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   const [success, setSuccess] = useState("");
+//   const [error, setError] = useState("");
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+
+//     setFormData((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   const handleResumeChange = (e) => {
+//     const file = e.target.files?.[0];
+
+//     if (!file) return;
+
+//     const allowedTypes = [
+//       "application/pdf",
+//       "application/msword",
+//       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+//     ];
+
+//     if (!allowedTypes.includes(file.type)) {
+//       setError("Please upload a PDF, DOC or DOCX file.");
+//       setResume(null);
+
+//       return;
+//     }
+
+//     setError("");
+//     setResume(file);
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     setSuccess("");
+//     setError("");
+
+//     // Basic validation
+//     if (
+//       !formData.name ||
+//       !formData.email ||
+//       !formData.phone ||
+//       !formData.position ||
+//       !formData.message
+//     ) {
+//       setError("Please fill in all required fields.");
+//       return;
+//     }
+
+//     if (!resume) {
+//       setError("Please upload your resume.");
+//       return;
+//     }
+
+//     if (formData.position === "Select Position") {
+//       setError("Please select a position.");
+//       return;
+//     }
+
+//     try {
+//       setLoading(true);
+
+//       const data = new FormData();
+
+//       data.append("name", formData.name);
+//       data.append("email", formData.email);
+//       data.append("phone", formData.phone);
+//       data.append("position", formData.position);
+//       data.append("coverLetter", formData.message);
+
+//       if (resume) {
+//         data.append("resume", resume);
+//       }
+
+//       const response = await api.post("/career-applications", data);
+
+//       console.log("Career application submitted:", response.data);
+
+//       setSuccess("Your application has been submitted successfully.");
+
+//       // Reset form
+//       setFormData({
+//         name: "",
+//         email: "",
+//         phone: "",
+//         position: "",
+//         message: "",
+//       });
+
+//       setResume(null);
+
+//       // Reset file input
+//       const fileInput = document.getElementById("resume-upload");
+
+//       if (fileInput) {
+//         fileInput.value = "";
+//       }
+//     } catch (err) {
+//       console.error("Career application error:", err);
+
+//       setError(
+//         err.response?.data?.message ||
+//           "Something went wrong. Please try again.",
+//       );
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <section className="w-full bg-black text-white py-28">
+//       <div className="max-w-7xl mx-auto px-6 lg:px-12">
+//         {/* Heading */}
+
+//         <div className="grid lg:grid-cols-2 gap-20 mb-20">
+//           <div>
+//             <p className="uppercase tracking-[0.35em] text-xs text-neutral-500 mb-5">
+//               Careers
+//             </p>
+
+//             <h2 className="text-5xl md:text-7xl font-light leading-[1.05] tracking-tight">
+//               Build Spaces.
+//               <br />
+//               Build Your
+//               <span className="italic font-normal"> Future.</span>
+//             </h2>
+//           </div>
+
+//           <div className="flex items-end">
+//             <p className="text-neutral-600 text-lg leading-8 max-w-lg">
+//               We believe exceptional design begins with exceptional people. If
+//               you're passionate about architecture, interiors, visualization, or
+//               project execution, we'd love to hear from you.
+//             </p>
+//           </div>
+//         </div>
+
+//         {/* Success Message */}
+
+//         {success && (
+//           <div className="mb-10 border border-green-500/40 bg-green-500/10 text-green-400 px-6 py-4">
+//             {success}
+//           </div>
+//         )}
+
+//         {/* Error Message */}
+
+//         {error && (
+//           <div className="mb-10 border border-red-500/40 bg-red-500/10 text-red-400 px-6 py-4">
+//             {error}
+//           </div>
+//         )}
+
+//         {/* Form */}
+
+//         <form onSubmit={handleSubmit} className="grid lg:grid-cols-2 gap-12">
+//           {/* Left */}
+
+//           <div className="space-y-10">
+//             {/* Name */}
+
+//             <div>
+//               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
+//                 Full Name
+//               </label>
+
+//               <input
+//                 type="text"
+//                 name="name"
+//                 value={formData.name}
+//                 onChange={handleChange}
+//                 placeholder="Enter your name"
+//                 className="w-full border-b border-neutral-300 pb-4 outline-none bg-transparent focus:border-white transition-all duration-300 placeholder:text-neutral-400"
+//                 required
+//               />
+//             </div>
+
+//             {/* Email */}
+
+//             <div>
+//               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
+//                 Email
+//               </label>
+
+//               <input
+//                 type="email"
+//                 name="email"
+//                 value={formData.email}
+//                 onChange={handleChange}
+//                 placeholder="your@email.com"
+//                 className="w-full border-b border-neutral-300 pb-4 outline-none bg-transparent focus:border-white transition-all duration-300 placeholder:text-neutral-400"
+//                 required
+//               />
+//             </div>
+
+//             {/* Phone */}
+
+//             <div>
+//               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
+//                 Phone
+//               </label>
+
+//               <input
+//                 type="tel"
+//                 name="phone"
+//                 value={formData.phone}
+//                 onChange={handleChange}
+//                 placeholder="+91 XXXXX XXXXX"
+//                 className="w-full border-b border-neutral-300 pb-4 outline-none bg-transparent focus:border-white transition-all duration-300 placeholder:text-neutral-400"
+//                 required
+//               />
+//             </div>
+
+//             {/* Position */}
+
+//             <div>
+//               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
+//                 Position Applying For
+//               </label>
+
+//               <select
+//                 name="position"
+//                 value={formData.position}
+//                 onChange={handleChange}
+//                 className="w-full border-b border-neutral-600 bg-neutral-900 text-white pb-4 px-2 outline-none focus:border-white transition-all duration-300"
+//                 required
+//               >
+//                 <option value="" className="bg-neutral-900 text-white">
+//                   Select Position
+//                 </option>
+
+//                 <option
+//                   value="Interior Designer"
+//                   className="bg-neutral-900 text-white"
+//                 >
+//                   Interior Designer
+//                 </option>
+
+//                 <option value="Architect" className="bg-neutral-900 text-white">
+//                   Architect
+//                 </option>
+
+//                 <option
+//                   value="3D Visualizer"
+//                   className="bg-neutral-900 text-white"
+//                 >
+//                   3D Visualizer
+//                 </option>
+
+//                 <option
+//                   value="Site Supervisor"
+//                   className="bg-neutral-900 text-white"
+//                 >
+//                   Site Supervisor
+//                 </option>
+
+//                 <option
+//                   value="Project Manager"
+//                   className="bg-neutral-900 text-white"
+//                 >
+//                   Project Manager
+//                 </option>
+//               </select>
+//             </div>
+//           </div>
+
+//           {/* Right */}
+
+//           <div className="space-y-10">
+//             {/* Cover Letter */}
+
+//             <div>
+//               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
+//                 Cover Letter
+//               </label>
+
+//               <textarea
+//                 name="message"
+//                 value={formData.message}
+//                 onChange={handleChange}
+//                 rows={8}
+//                 placeholder="Tell us about yourself..."
+//                 className="w-full border border-neutral-300 p-6 outline-none resize-none focus:border-white transition-all duration-300 placeholder:text-neutral-400"
+//                 required
+//               />
+//             </div>
+
+//             {/* Upload */}
+
+//             <div>
+//               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
+//                 Resume
+//               </label>
+
+//               <label className="border border-dashed border-neutral-400 rounded-sm h-44 flex flex-col items-center justify-center cursor-pointer hover:border-white transition">
+//                 <Upload size={34} className="text-neutral-400 mb-4" />
+
+//                 <p className="text-neutral-300">
+//                   {resume ? resume.name : "Upload Resume"}
+//                 </p>
+
+//                 <span className="text-sm text-neutral-400 mt-2">
+//                   PDF / DOC / DOCX
+//                 </span>
+
+//                 <input
+//                   id="resume-upload"
+//                   type="file"
+//                   accept=".pdf,.doc,.docx"
+//                   required
+//                   onChange={handleResumeChange}
+//                   className="hidden"
+//                 />
+//               </label>
+//             </div>
+
+//             {/* Button */}
+
+//             <button
+//               type="submit"
+//               disabled={loading}
+//               className={`group inline-flex items-center gap-4 border border-white px-8 py-4 uppercase tracking-[0.25em] text-sm transition-all duration-500 ${
+//                 loading
+//                   ? "opacity-50 cursor-not-allowed"
+//                   : "hover:bg-white hover:text-black"
+//               }`}
+//             >
+//               {loading ? "Submitting..." : "Submit Application"}
+
+//               {!loading && (
+//                 <ArrowRight
+//                   size={18}
+//                   className="group-hover:translate-x-2 transition-transform duration-300"
+//                 />
+//               )}
+//             </button>
+//           </div>
+//         </form>
+//       </div>
+//     </section>
+//   );
+// }
+
+
+
 import { ArrowRight, Upload } from "lucide-react";
 import { useState } from "react";
 import api from "../../services/api";
@@ -39,7 +402,7 @@ export default function CareerForm() {
     if (!allowedTypes.includes(file.type)) {
       setError("Please upload a PDF, DOC or DOCX file.");
       setResume(null);
-
+      e.target.value = "";
       return;
     }
 
@@ -79,21 +442,18 @@ export default function CareerForm() {
       setLoading(true);
 
       const data = new FormData();
-
       data.append("name", formData.name);
       data.append("email", formData.email);
       data.append("phone", formData.phone);
       data.append("position", formData.position);
       data.append("coverLetter", formData.message);
-
-      if (resume) {
-        data.append("resume", resume);
-      }
+      data.append("resume", resume);
 
       const response = await api.post("/career-applications", data);
 
       console.log("Career application submitted:", response.data);
 
+      // Show success popup only after successful API response
       setSuccess("Your application has been submitted successfully.");
 
       // Reset form
@@ -104,12 +464,10 @@ export default function CareerForm() {
         position: "",
         message: "",
       });
-
       setResume(null);
 
       // Reset file input
       const fileInput = document.getElementById("resume-upload");
-
       if (fileInput) {
         fileInput.value = "";
       }
@@ -118,7 +476,7 @@ export default function CareerForm() {
 
       setError(
         err.response?.data?.message ||
-          "Something went wrong. Please try again.",
+          "Something went wrong. Please try again."
       );
     } finally {
       setLoading(false);
@@ -129,7 +487,6 @@ export default function CareerForm() {
     <section className="w-full bg-black text-white py-28">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Heading */}
-
         <div className="grid lg:grid-cols-2 gap-20 mb-20">
           <div>
             <p className="uppercase tracking-[0.35em] text-xs text-neutral-500 mb-5">
@@ -153,35 +510,25 @@ export default function CareerForm() {
           </div>
         </div>
 
-        {/* Success Message */}
-
-        {success && (
-          <div className="mb-10 border border-green-500/40 bg-green-500/10 text-green-400 px-6 py-4">
-            {success}
-          </div>
-        )}
-
         {/* Error Message */}
-
         {error && (
-          <div className="mb-10 border border-red-500/40 bg-red-500/10 text-red-400 px-6 py-4">
+          <div
+            role="alert"
+            className="mb-10 border border-red-500/40 bg-red-500/10 text-red-400 px-6 py-4"
+          >
             {error}
           </div>
         )}
 
         {/* Form */}
-
         <form onSubmit={handleSubmit} className="grid lg:grid-cols-2 gap-12">
           {/* Left */}
-
           <div className="space-y-10">
             {/* Name */}
-
             <div>
               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
                 Full Name
               </label>
-
               <input
                 type="text"
                 name="name"
@@ -194,12 +541,10 @@ export default function CareerForm() {
             </div>
 
             {/* Email */}
-
             <div>
               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
                 Email
               </label>
-
               <input
                 type="email"
                 name="email"
@@ -212,12 +557,10 @@ export default function CareerForm() {
             </div>
 
             {/* Phone */}
-
             <div>
               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
                 Phone
               </label>
-
               <input
                 type="tel"
                 name="phone"
@@ -230,12 +573,10 @@ export default function CareerForm() {
             </div>
 
             {/* Position */}
-
             <div>
               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
                 Position Applying For
               </label>
-
               <select
                 name="position"
                 value={formData.position}
@@ -246,36 +587,19 @@ export default function CareerForm() {
                 <option value="" className="bg-neutral-900 text-white">
                   Select Position
                 </option>
-
-                <option
-                  value="Interior Designer"
-                  className="bg-neutral-900 text-white"
-                >
+                <option value="Interior Designer" className="bg-neutral-900 text-white">
                   Interior Designer
                 </option>
-
                 <option value="Architect" className="bg-neutral-900 text-white">
                   Architect
                 </option>
-
-                <option
-                  value="3D Visualizer"
-                  className="bg-neutral-900 text-white"
-                >
+                <option value="3D Visualizer" className="bg-neutral-900 text-white">
                   3D Visualizer
                 </option>
-
-                <option
-                  value="Site Supervisor"
-                  className="bg-neutral-900 text-white"
-                >
+                <option value="Site Supervisor" className="bg-neutral-900 text-white">
                   Site Supervisor
                 </option>
-
-                <option
-                  value="Project Manager"
-                  className="bg-neutral-900 text-white"
-                >
+                <option value="Project Manager" className="bg-neutral-900 text-white">
                   Project Manager
                 </option>
               </select>
@@ -283,15 +607,12 @@ export default function CareerForm() {
           </div>
 
           {/* Right */}
-
           <div className="space-y-10">
             {/* Cover Letter */}
-
             <div>
               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
                 Cover Letter
               </label>
-
               <textarea
                 name="message"
                 value={formData.message}
@@ -304,23 +625,18 @@ export default function CareerForm() {
             </div>
 
             {/* Upload */}
-
             <div>
               <label className="block text-sm uppercase tracking-[0.2em] mb-4">
                 Resume
               </label>
-
               <label className="border border-dashed border-neutral-400 rounded-sm h-44 flex flex-col items-center justify-center cursor-pointer hover:border-white transition">
                 <Upload size={34} className="text-neutral-400 mb-4" />
-
-                <p className="text-neutral-300">
+                <p className="text-neutral-300 text-center px-4 break-all">
                   {resume ? resume.name : "Upload Resume"}
                 </p>
-
                 <span className="text-sm text-neutral-400 mt-2">
                   PDF / DOC / DOCX
                 </span>
-
                 <input
                   id="resume-upload"
                   type="file"
@@ -333,7 +649,6 @@ export default function CareerForm() {
             </div>
 
             {/* Button */}
-
             <button
               type="submit"
               disabled={loading}
@@ -344,7 +659,6 @@ export default function CareerForm() {
               }`}
             >
               {loading ? "Submitting..." : "Submit Application"}
-
               {!loading && (
                 <ArrowRight
                   size={18}
@@ -355,6 +669,59 @@ export default function CareerForm() {
           </div>
         </form>
       </div>
+
+      {/* Success Popup */}
+      {success && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="success-title"
+        >
+          <div className="relative w-full max-w-md border border-neutral-800 bg-neutral-950 p-8 sm:p-10 text-center shadow-2xl">
+            {/* Success Icon */}
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-green-500/30 bg-green-500/10">
+              <svg
+                className="h-8 w-8 text-green-400"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+
+            <h3
+              id="success-title"
+              className="mb-4 text-2xl font-light text-white"
+            >
+              Application Submitted
+              <span className="italic"> Successfully!</span>
+            </h3>
+
+            <p className="mb-8 leading-7 text-neutral-400">
+              Thank you for applying. Your application has been received
+              successfully. Our team will review your profile and contact you if
+              your qualifications match our requirements.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setSuccess("")}
+              className="w-full border border-white px-8 py-4 text-sm uppercase tracking-[0.25em] text-white transition-all duration-300 hover:bg-white hover:text-black"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
+
