@@ -27,6 +27,22 @@ body {
   background: #000;
 }
 
+/* Hero Background Image */
+.hero-background {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Mobile Responsive Background */
+@media (max-width: 640px) {
+  .hero-background {
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+}
+
 .font-sixcaps {
   font-family: "Six Caps", sans-serif;
   font-weight: 400;
