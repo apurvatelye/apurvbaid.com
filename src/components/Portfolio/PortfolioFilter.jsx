@@ -1,82 +1,251 @@
 
+// export default function PortfolioFilter({
+//   filters,
+//   activeFilter,
+//   setActiveFilter,
+// }) {
+//   return (
+//     <section className="w-full border-b border-zinc-200">
+//       <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-8 lg:px-14">
+
+//         <div
+//           className="
+//             flex
+//             min-h-[90px]
+//             items-center
+//             py-5
+//             md:min-h-[110px]
+//             lg:min-h-[150px]
+//           "
+//         >
+//           <div
+//             className="
+//               flex
+//               w-full
+//               min-w-0
+//               flex-wrap
+//               items-center
+//               justify-center
+//               gap-2
+//               sm:gap-3
+//               md:justify-start
+//               md:gap-5
+//               lg:gap-10
+//             "
+//           >
+//             {filters.map((filter) => {
+//               const active = activeFilter === filter;
+
+//               return (
+//                 <button
+//                   key={filter}
+//                   type="button"
+//                   onClick={() => setActiveFilter(filter)}
+//                   aria-pressed={active}
+//                   className={`
+//                     shrink-0
+//                     rounded-full
+//                     border
+//                     transition-all
+//                     duration-300
+//                     px-3
+//                     py-2
+//                     text-xs
+//                     sm:px-4
+//                     sm:text-sm
+//                     md:px-5
+//                     md:py-2
+//                     md:text-base
+//                     lg:text-[20px]
+
+//                     ${
+//                       active
+//                         ? "border-zinc-400 text-zinc-700"
+//                         : "border-transparent text-zinc-400 hover:border-zinc-300 hover:text-black"
+//                     }
+//                   `}
+//                 >
+//                   {filter}
+//                 </button>
+//               );
+//             })}
+//           </div>
+//         </div>
+
+//       </div>
+//     </section>
+//   );
+// }
+
+
+
+
+
+import { useState, useEffect, useRef } from "react";
+
 export default function PortfolioFilter({
-  filters,
-  activeFilter,
-  setActiveFilter,
+    filters,
+    activeFilter,
+    setActiveFilter,
 }) {
-  return (
-    <section className="w-full border-b border-zinc-200">
-      <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-8 lg:px-14">
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
+    // Close dropdown on outside click
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+        };
+    }, []);
+
+    return (
         <div
-          className="
-            flex
-            min-h-[90px]
-            items-center
-            py-5
-            md:min-h-[110px]
-            lg:min-h-[150px]
-          "
+            ref={dropdownRef}
+            className="relative z-50 inline-block"
         >
-          <div
-            className="
-              flex
-              w-full
-              min-w-0
-              flex-wrap
-              items-center
-              justify-center
-              gap-2
-              sm:gap-3
-              md:justify-start
-              md:gap-5
-              lg:gap-10
-            "
-          >
-            {filters.map((filter) => {
-              const active = activeFilter === filter;
-
-              return (
-                <button
-                  key={filter}
-                  type="button"
-                  onClick={() => setActiveFilter(filter)}
-                  aria-pressed={active}
-                  className={`
-                    shrink-0
-                    rounded-full
-                    border
-                    transition-all
-                    duration-300
-                    px-3
+            {/* Dropdown Toggle */}
+            <button
+                type="button"
+                onClick={() => setIsOpen((prev) => !prev)}
+                aria-expanded={isOpen}
+                aria-haspopup="true"
+                className="
+                    flex
+                    items-center
+                    justify-between
+                    gap-4
+                    min-w-[135px]
+                    border-b
+                    border-white/70
                     py-2
                     text-xs
-                    sm:px-4
+                    font-medium
+                    uppercase
+                    tracking-[2px]
+                    text-white
+                    transition-all
+                    duration-300
+                    hover:border-white
+                    sm:min-w-[160px]
                     sm:text-sm
-                    md:px-5
-                    md:py-2
-                    md:text-base
-                    lg:text-[20px]
+                "
+            >
+                <span className="truncate max-w-[130px]">
+                    {activeFilter || "Categories"}
+                </span>
+
+                <svg
+                    className={`
+                        h-3
+                        w-3
+                        shrink-0
+                        transition-transform
+                        duration-300
+                        ${isOpen ? "rotate-180" : ""}
+                    `}
+                    viewBox="0 0 12 12"
+                    fill="none"
+                >
+                    <path
+                        d="M2 4L6 8L10 4"
+                        stroke="currentColor"
+                        strokeWidth="1.3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            </button>
+
+            {/* Dropdown Options */}
+            <div
+                className={`
+                    absolute
+                    right-0
+                    bottom-full
+                    mb-3
+                    w-[190px]
+                    overflow-hidden
+                    border
+                    border-white/20
+                    bg-[#171717]/95
+                    shadow-xl
+                    backdrop-blur-xl
+                    origin-bottom-right
+                    transition-all
+                    duration-300
 
                     ${
-                      active
-                        ? "border-zinc-400 text-zinc-700"
-                        : "border-transparent text-zinc-400 hover:border-zinc-300 hover:text-black"
+                        isOpen
+                            ? "visible translate-y-0 opacity-100"
+                            : "invisible translate-y-2 opacity-0"
                     }
-                  `}
-                >
-                  {filter}
-                </button>
-              );
-            })}
-          </div>
+                `}
+            >
+                <div className="max-h-[250px] overflow-y-auto scrollbar-hide py-2">
+
+                    {filters.map((filter) => {
+                        const active = activeFilter === filter;
+
+                        return (
+                            <button
+                                key={filter}
+                                type="button"
+                                onClick={() => {
+                                    setActiveFilter(filter);
+                                    setIsOpen(false);
+                                }}
+                                aria-pressed={active}
+                                className={`
+                                    flex
+                                    w-full
+                                    items-center
+                                    justify-between
+                                    gap-3
+                                    px-4
+                                    py-3
+                                    text-left
+                                    text-xs
+                                    uppercase
+                                    tracking-[1.5px]
+                                    transition-all
+                                    duration-200
+
+                                    ${
+                                        active
+                                            ? "bg-white/10 text-white"
+                                            : "text-white/60 hover:bg-white/10 hover:text-white"
+                                    }
+                                `}
+                            >
+                                <span>{filter}</span>
+
+                                {active && (
+                                    <span className="text-white">
+                                        ✓
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
+
+                </div>
+            </div>
         </div>
-
-      </div>
-    </section>
-  );
+    );
 }
-
-
 
 
