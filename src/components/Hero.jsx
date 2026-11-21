@@ -172,6 +172,7 @@
 
 
 
+
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
@@ -182,7 +183,6 @@ const Hero = ({
     leftBottomText,
     leftBottomIcon,
     rightBottomText,
-    backgroundImage,
 }) => {
     const heroRef = useRef([]);
 
@@ -204,47 +204,50 @@ const Hero = ({
             }
         );
 
-        return () => animation.kill();
+        return () => {
+            animation.kill();
+        };
     }, []);
 
     return (
         <section
             className="
+                hero-background
                 relative
+                flex
                 w-full
+                flex-col
+                items-center
+                justify-center
                 overflow-hidden
                 bg-black
                 text-white
+
+                h-[85svh]
+                min-h-[500px]
+                max-h-[850px]
+
+                sm:h-screen
+                sm:min-h-[600px]
+                sm:max-h-none
+
+                px-4
+                sm:px-8
+                lg:px-16
             "
         >
-            {/* Full Landscape Background Image */}
-            {backgroundImage && (
-                <img
-                    src={backgroundImage}
-                    alt="Hero background"
-                    className="
-                        block
-                        h-auto
-                        w-full
-                        object-contain
-                    "
-                />
-            )}
-
             {/* Hero Content */}
             <div
                 className="
-                    absolute
-                    inset-0
+                    relative
                     z-10
                     flex
+                    w-full
                     flex-col
                     items-center
                     justify-center
-                    px-4
+                    px-2
                     text-center
-                    sm:px-8
-                    lg:px-16
                 "
             >
                 {/* First Line */}
@@ -307,8 +310,9 @@ const Hero = ({
                     <p
                         ref={(el) => (heroRef.current[2] = el)}
                         className="
-                            mt-4
+                            mt-5
                             max-w-[310px]
+                            text-center
                             text-sm
                             leading-relaxed
                             text-white/70
@@ -322,6 +326,8 @@ const Hero = ({
 
                             lg:max-w-3xl
                             lg:text-xl
+
+                            xl:max-w-4xl
                         "
                     >
                         {paragraph}
@@ -333,7 +339,7 @@ const Hero = ({
             <div
                 className="
                     absolute
-                    bottom-3
+                    bottom-5
                     left-0
                     z-20
                     flex
@@ -345,15 +351,30 @@ const Hero = ({
 
                     sm:bottom-6
                     sm:px-8
+
                     lg:px-16
                 "
             >
-                {/* Left */}
+                {/* Left Bottom */}
                 <div
                     ref={(el) => (heroRef.current[3] = el)}
-                    className="flex shrink-0 items-center gap-2"
+                    className="
+                        flex
+                        shrink-0
+                        items-center
+                        gap-2
+                    "
                 >
-                    <span className="whitespace-nowrap text-xs font-medium sm:text-base lg:text-lg">
+                    <span
+                        className="
+                            whitespace-nowrap
+                            text-xs
+                            font-medium
+
+                            sm:text-base
+                            lg:text-lg
+                        "
+                    >
                         {leftBottomText}
                     </span>
 
@@ -364,7 +385,7 @@ const Hero = ({
                     )}
                 </div>
 
-                {/* Right */}
+                {/* Right Bottom */}
                 <div
                     ref={(el) => (heroRef.current[4] = el)}
                     className="
@@ -375,6 +396,7 @@ const Hero = ({
                         overflow-hidden
                         text-right
                         text-xs
+
                         sm:text-base
                         lg:text-lg
                     "
