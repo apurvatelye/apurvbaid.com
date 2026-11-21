@@ -170,6 +170,7 @@
 
 
 
+
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
@@ -184,9 +185,14 @@ const Hero = ({
     const heroRef = useRef([]);
 
     useEffect(() => {
-        gsap.fromTo(
-            heroRef.current.filter(Boolean),
-            { y: 80, opacity: 0 },
+        const elements = heroRef.current.filter(Boolean);
+
+        const animation = gsap.fromTo(
+            elements,
+            {
+                y: 80,
+                opacity: 0,
+            },
             {
                 y: 0,
                 opacity: 1,
@@ -195,69 +201,131 @@ const Hero = ({
                 ease: "expo.out",
             }
         );
+
+        return () => {
+            animation.kill();
+        };
     }, []);
 
     return (
         <section
             className="
-                relative flex w-full flex-col
-                items-center justify-center
-                overflow-hidden bg-black text-white
+                hero-background
+                relative
+                flex
+                w-full
+                flex-col
+                items-center
+                justify-center
+                overflow-hidden
+                bg-black
+                text-white
 
                 h-[85svh]
-                min-h-[620px]
+                min-h-[500px]
+                max-h-[850px]
 
-                sm:min-h-screen
-                md:min-h-screen
+                sm:h-screen
+                sm:min-h-[600px]
+                sm:max-h-none
 
-                px-4 sm:px-8 lg:px-16
+                px-4
+                sm:px-8
+                lg:px-16
             "
         >
             {/* Hero Content */}
-            <div className="relative z-10 flex flex-col items-center text-center w-full px-2">
-
+            <div
+                className="
+                    relative
+                    z-10
+                    flex
+                    w-full
+                    flex-col
+                    items-center
+                    justify-center
+                    px-2
+                    text-center
+                "
+            >
+                {/* First Line */}
                 <h1
                     ref={(el) => (heroRef.current[0] = el)}
                     className="
-                        font-anton uppercase leading-tight
-                        text-xl tracking-[6px]
-                        sm:text-2xl sm:tracking-[12px]
-                        md:text-3xl md:tracking-[18px]
-                        lg:text-4xl lg:tracking-[28px]
-                        xl:text-[42px] xl:tracking-[40px]
+                        font-anton
+                        uppercase
+                        leading-tight
+                        text-xl
+                        tracking-[6px]
+
+                        sm:text-2xl
+                        sm:tracking-[12px]
+
+                        md:text-3xl
+                        md:tracking-[18px]
+
+                        lg:text-4xl
+                        lg:tracking-[28px]
+
+                        xl:text-[42px]
+                        xl:tracking-[40px]
                     "
                 >
                     {firstLine}
                 </h1>
 
+                {/* Second Line */}
                 {secondLine && (
                     <h1
                         ref={(el) => (heroRef.current[1] = el)}
                         className="
-                            mt-2 font-anton uppercase leading-tight
-                            text-xl tracking-[6px]
-                            sm:text-2xl sm:tracking-[12px]
-                            md:text-3xl md:tracking-[18px]
-                            lg:text-4xl lg:tracking-[28px]
-                            xl:text-[42px] xl:tracking-[40px]
+                            mt-2
+                            font-anton
+                            uppercase
+                            leading-tight
+                            text-xl
+                            tracking-[6px]
+
+                            sm:text-2xl
+                            sm:tracking-[12px]
+
+                            md:text-3xl
+                            md:tracking-[18px]
+
+                            lg:text-4xl
+                            lg:tracking-[28px]
+
+                            xl:text-[42px]
+                            xl:tracking-[40px]
                         "
                     >
                         {secondLine}
                     </h1>
                 )}
 
+                {/* Paragraph */}
                 {paragraph && (
                     <p
                         ref={(el) => (heroRef.current[2] = el)}
                         className="
-                            mt-5 sm:mt-6
+                            mt-5
                             max-w-[310px]
-                            text-center text-sm leading-relaxed
+                            text-center
+                            text-sm
+                            leading-relaxed
                             text-white/70
 
-                            sm:max-w-lg sm:text-base
-                            md:max-w-2xl md:text-lg
-                            lg:max-w-3xl lg:text-xl
+                            sm:mt-6
+                            sm:max-w-lg
+                            sm:text-base
+
+                            md:max-w-2xl
+                            md:text-lg
+
+                            lg:max-w-3xl
+                            lg:text-xl
+
+                            xl:max-w-4xl
                         "
                     >
                         {paragraph}
@@ -268,19 +336,43 @@ const Hero = ({
             {/* Bottom Bar */}
             <div
                 className="
-                    absolute bottom-5 sm:bottom-6
-                    left-0 w-full
-                    px-4 sm:px-8 lg:px-16
-                    flex items-center justify-between
+                    absolute
+                    bottom-5
+                    left-0
+                    z-20
+                    flex
+                    w-full
+                    items-center
+                    justify-between
                     gap-3
+                    px-4
+
+                    sm:bottom-6
+                    sm:px-8
+
+                    lg:px-16
                 "
             >
-                {/* Left */}
+                {/* Left Bottom */}
                 <div
                     ref={(el) => (heroRef.current[3] = el)}
-                    className="flex items-center gap-2 shrink-0"
+                    className="
+                        flex
+                        shrink-0
+                        items-center
+                        gap-2
+                    "
                 >
-                    <span className="text-xs sm:text-base font-medium whitespace-nowrap">
+                    <span
+                        className="
+                            whitespace-nowrap
+                            text-xs
+                            font-medium
+
+                            sm:text-base
+                            lg:text-lg
+                        "
+                    >
                         {leftBottomText}
                     </span>
 
@@ -291,14 +383,20 @@ const Hero = ({
                     )}
                 </div>
 
-                {/* Right */}
+                {/* Right Bottom */}
                 <div
                     ref={(el) => (heroRef.current[4] = el)}
                     className="
-                        flex-1 min-w-0
-                        flex justify-end
-                        text-xs sm:text-base
+                        flex
+                        min-w-0
+                        flex-1
+                        justify-end
                         overflow-hidden
+                        text-right
+                        text-xs
+
+                        sm:text-base
+                        lg:text-lg
                     "
                 >
                     <div className="truncate">
