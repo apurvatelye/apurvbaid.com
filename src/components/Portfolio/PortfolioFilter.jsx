@@ -1,35 +1,36 @@
+
 export default function PortfolioFilter({
   filters,
   activeFilter,
   setActiveFilter,
 }) {
   return (
-    <section className="border-b border-zinc-200">
-      <div className="max-w-[1800px] mx-auto">
+    <section className="w-full border-b border-zinc-200">
+      <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-8 lg:px-14">
 
         <div
           className="
-            h-[90px]
-            md:h-[110px]
-            lg:h-[150px]
-            px-5
-            sm:px-8
-            lg:px-14
             flex
+            min-h-[90px]
             items-center
+            py-5
+            md:min-h-[110px]
+            lg:min-h-[150px]
           "
         >
           <div
             className="
               flex
+              w-full
+              min-w-0
+              flex-wrap
               items-center
-              gap-3
+              justify-center
+              gap-2
+              sm:gap-3
+              md:justify-start
               md:gap-5
               lg:gap-10
-              overflow-x-auto
-              whitespace-nowrap
-              scrollbar-hide
-              w-full
             "
           >
             {filters.map((filter) => {
@@ -40,22 +41,27 @@ export default function PortfolioFilter({
                   key={filter}
                   type="button"
                   onClick={() => setActiveFilter(filter)}
+                  aria-pressed={active}
                   className={`
                     shrink-0
                     rounded-full
+                    border
                     transition-all
                     duration-300
-                    px-4
-                    md:px-5
+                    px-3
                     py-2
-                    text-sm
-                    sm:text-base
+                    text-xs
+                    sm:px-4
+                    sm:text-sm
+                    md:px-5
+                    md:py-2
+                    md:text-base
                     lg:text-[20px]
 
                     ${
                       active
-                        ? "border border-zinc-400 text-zinc-700"
-                        : "text-zinc-400 hover:text-black"
+                        ? "border-zinc-400 text-zinc-700"
+                        : "border-transparent text-zinc-400 hover:border-zinc-300 hover:text-black"
                     }
                   `}
                 >
